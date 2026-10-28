@@ -312,7 +312,9 @@ const FreshTrackApp = (() => {
   // Charts
   function initCharts() {
     Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+    Chart.defaults.font.weight = '600';
     Chart.defaults.color = getChartTextColor();
+    Chart.defaults.borderColor = getChartGridColor();
 
     initRankingsChart();
     initSourcesDonutChart();
@@ -322,7 +324,7 @@ const FreshTrackApp = (() => {
   }
 
   function getChartTextColor() {
-    return state.theme === 'dark' ? '#f2f7f4' : '#14221a';
+    return state.theme === 'dark' ? '#f2f7f4' : '#0a130e';
   }
 
   function getChartGridColor() {
@@ -348,6 +350,10 @@ const FreshTrackApp = (() => {
   function updateChartTheme() {
     const textColor = getChartTextColor();
     const gridColor = getChartGridColor();
+
+    // Reset global Chart.js defaults so all charts pick up new theme colors
+    Chart.defaults.color = textColor;
+    Chart.defaults.borderColor = gridColor;
     const isDark = state.theme === 'dark';
 
     if (state.charts.sourcesDonut && state.charts.sourcesDonut.data.datasets[0]) {

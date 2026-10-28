@@ -555,15 +555,47 @@ a:hover {
   padding: 0 14px;
   font-family: var(--font-body);
   font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-primary);
+  font-weight: 600;
+  color: var(--text-primary) !important;
+  caret-color: var(--accent-forest);
   outline: none;
   transition: var(--transition);
+  -webkit-text-fill-color: var(--text-primary);
+}
+
+.select-custom option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.input-search::placeholder {
+  color: var(--text-muted);
+  opacity: 0.75;
+  font-weight: 400;
+}
+
+[data-theme="dark"] .select-custom,
+[data-theme="dark"] .input-search {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary) !important;
+  -webkit-text-fill-color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .select-custom option {
+  background: #1b2620;
+  color: #f2f7f4;
+}
+
+[data-theme="dark"] .input-search::placeholder {
+  color: #6b7e73;
+  opacity: 1;
 }
 
 .select-custom:focus, .input-search:focus {
   border-color: var(--accent-forest);
   box-shadow: 0 0 0 3px rgba(37, 90, 64, 0.12);
+  background: var(--bg-surface);
 }
 
 /* KPI Cards Grid */
