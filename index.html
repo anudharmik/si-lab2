@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshTrack — Food Waste Intelligence & Analytics</title>
+  <meta name="description" content="Explore global food waste analytics across 214 countries and run interactive machine-learning estimates based on the UNEP Food Waste Index.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#overview" class="brand" id="brand-link">
+        <div class="brand-icon">
+          <!-- Custom Minimal Leaf Compass SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">FreshTrack</span>
+          <span class="brand-subtitle">Food Waste Intelligence</span>
+        </div>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#overview" class="nav-link active" id="nav-overview">Overview</a></li>
+          <li><a href="#countries" class="nav-link" id="nav-countries">Countries</a></li>
+          <li><a href="#sources" class="nav-link" id="nav-sources">Waste Sources</a></li>
+          <li><a href="#regions" class="nav-link" id="nav-regions">Regions</a></li>
+          <li><a href="#estimator" class="nav-link" id="nav-estimator">Estimator (ML)</a></li>
+          <li><a href="#registry" class="nav-link" id="nav-registry">Data Registry</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="theme-toggle" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+          <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <button class="btn-pill btn-primary" id="btn-quick-estimate" onclick="document.getElementById('estimator').scrollIntoView({behavior:'smooth'})">
+          <span>Try Estimator</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 1: Overview & Global Pulse -->
+    <section class="hero-section" id="overview">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-badge-row">
+            <span class="badge-tag">
+              <span class="pulse-dot"></span>
+              Global Baseline Analytics
+            </span>
+            <span class="badge-source">United Nations Environment Programme (UNEP) Food Waste Index</span>
+          </div>
+
+          <h1 class="hero-title">
+            Understanding Global Food Waste: <span class="highlight">931 Million Tonnes</span> Lost Annually
+          </h1>
+
+          <p class="hero-desc">
+            Food waste happens across homes, retail groceries, and dining establishments. FreshTrack consolidates country-level records to provide clear visibility into where food is discarded, how regions compare, and how machine learning can approximate household waste.
+          </p>
+
+          <!-- Dynamic Multi-filter Control Bar -->
+          <div class="filter-toolbar">
+            <div class="filter-header">
+              <div class="filter-title-group">
+                <span class="filter-title">Dataset Filters</span>
+                <span class="filter-status-tag" id="filter-counter-tag">214 of 214 countries active</span>
+              </div>
+              <button class="btn-pill" id="btn-reset-filters" style="display:none;" onclick="FreshTrackApp.resetFilters()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+                <span>Reset Filters</span>
+              </button>
+            </div>
+
+            <div class="filter-controls-grid">
+              <div class="control-item">
+                <label class="control-label" for="filter-region">Filter by Region</label>
+                <select class="select-custom" id="filter-region">
+                  <option value="ALL">All Regions (Global)</option>
+                </select>
+              </div>
+
+              <div class="control-item">
+                <label class="control-label" for="filter-confidence">Estimate Confidence</label>
+                <select class="select-custom" id="filter-confidence">
+                  <option value="ALL">All Confidence Levels</option>
+                  <option value="High Confidence">High Confidence</option>
+                  <option value="Medium Confidence">Medium Confidence</option>
+                  <option value="Low Confidence">Low Confidence</option>
+                  <option value="Very Low Confidence">Very Low Confidence</option>
+                </select>
+              </div>
+
+              <div class="control-item">
+                <label class="control-label" for="filter-search-quick">Quick Search</label>
+                <input type="text" class="input-search" id="filter-search-quick" placeholder="Search country name...">
+              </div>
+
+              <div class="control-item" style="align-self: flex-end;">
+                <button class="btn-pill" id="btn-export-csv-quick" onclick="FreshTrackApp.exportCSV()" title="Download current filtered dataset as CSV">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  <span>Export CSV</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI Metric Cards Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card" id="kpi-card-total">
+              <div class="kpi-top">
+                <span class="kpi-label">Total Annual Waste</span>
+                <span class="kpi-badge green">All Sources</span>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-total-tonnes">931.3M</span>
+                <span class="kpi-unit">tonnes / year</span>
+              </div>
+              <p class="kpi-note">Sum of household, retail, and food service estimates across selected nations.</p>
+              <div class="kpi-meter">
+                <div class="kpi-meter-fill" id="kpi-total-meter" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpi-card-household">
+              <div class="kpi-top">
+                <span class="kpi-label">Household Share</span>
+                <span class="kpi-badge green">Primary Source</span>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-household-share">61.2%</span>
+                <span class="kpi-unit" id="kpi-household-tonnes">(570.0M t)</span>
+              </div>
+              <p class="kpi-note">Kitchen and home waste represents the majority of wasted food worldwide.</p>
+              <div class="kpi-meter">
+                <div class="kpi-meter-fill" id="kpi-household-meter" style="width: 61.2%; background: #10b981;"></div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpi-card-per-capita">
+              <div class="kpi-top">
+                <span class="kpi-label">Per-Person Average</span>
+                <span class="kpi-badge blue">Combined</span>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-avg-combined">126.8</span>
+                <span class="kpi-unit">kg / person / year</span>
+              </div>
+              <p class="kpi-note">Includes 84.3 kg household, 27.4 kg food service, and 15.1 kg retail.</p>
+              <div class="kpi-meter">
+                <div class="kpi-meter-fill" id="kpi-percapita-meter" style="width: 78%; background: #38bdf8;"></div>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpi-card-countries">
+              <div class="kpi-top">
+                <span class="kpi-label">Coverage</span>
+                <span class="kpi-badge amber" id="kpi-coverage-badge">100% of UNEP</span>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-countries-count">214</span>
+                <span class="kpi-unit">nations tracked</span>
+              </div>
+              <p class="kpi-note">Official UN M49 standardized country records from the Food Waste Index report.</p>
+              <div class="kpi-meter">
+                <div class="kpi-meter-fill" id="kpi-coverage-meter" style="width: 100%; background: #f59e0b;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Country Rankings & Explorer -->
+    <section class="section-block" id="countries">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Country Intelligence</div>
+          <h2 class="section-title">Country Rankings & Explorer</h2>
+          <p class="section-desc">
+            Compare national estimates, inspect per-capita habits versus total tonnage volumes, and click any country to view an individual waste profile.
+          </p>
+        </div>
+
+        <div class="grid-1-1-custom">
+          <!-- Left Column: Interactive Rankings Chart -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title" id="rankings-chart-title">Top 10 Countries by Food Waste</h3>
+                <span class="card-subtitle" id="rankings-chart-subtitle">Ranked by combined kilograms per person per year</span>
+              </div>
+              <div class="card-toolbar">
+                <div class="tab-toggle-group" id="ranking-metric-toggle">
+                  <button class="tab-toggle active" data-metric="combined_kg">Per Capita (kg)</button>
+                  <button class="tab-toggle" data-metric="household_tonnes">Total Tonnes</button>
+                  <button class="tab-toggle" data-metric="household_kg">Household (kg)</button>
+                </div>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 440px;">
+              <canvas id="chart-country-rankings"></canvas>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Country Browser & Inspector Trigger -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Country Browser</h3>
+                <span class="card-subtitle">Click any row to open country profile sheet</span>
+              </div>
+              <div class="card-toolbar">
+                <input type="text" class="input-search" id="country-search-input" placeholder="Filter by name..." style="height: 34px; font-size: 0.8rem; width: 170px;">
+              </div>
+            </div>
+
+            <div class="country-list-scroll" id="country-cards-container">
+              <!-- Dynamically populated country cards -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Waste Sources Comparison -->
+    <section class="section-block" id="sources">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Sector Distribution</div>
+          <h2 class="section-title">Where Does Food Waste Originate?</h2>
+          <p class="section-desc">
+            Food waste is split across three key sectors: households, retail grocery shops, and the food-service industry. Explore their relative contribution and per-person numbers.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Left: Global Share Donut Chart -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Share of Global Food Waste</h3>
+                <span class="card-subtitle">Proportion of annual tonnage discarded by sector</span>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 320px;">
+              <canvas id="chart-sources-donut"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: Per Capita Comparison Bar Chart -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Average Discard per Person</h3>
+                <span class="card-subtitle">Kilograms per capita per year across sectors</span>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 320px;">
+              <canvas id="chart-sources-bars"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explanatory Pill Cards in Simple English -->
+        <div class="source-pill-grid">
+          <div class="source-pill-card">
+            <h4 class="source-pill-title">Household Waste</h4>
+            <div class="source-pill-val-row">
+              <span class="source-pill-val" id="pill-household-kg">84.3</span>
+              <span class="kpi-unit">kg / person</span>
+            </div>
+            <p class="source-pill-desc">
+              Makes up <strong>61.2%</strong> of all wasted food. Everyday decisions like cooking too much, improper storage, and expired groceries in private kitchens create the single largest volume.
+            </p>
+          </div>
+
+          <div class="source-pill-card foodservice">
+            <h4 class="source-pill-title">Food Service</h4>
+            <div class="source-pill-val-row">
+              <span class="source-pill-val" id="pill-fs-kg">27.4</span>
+              <span class="kpi-unit">kg / person</span>
+            </div>
+            <p class="source-pill-desc">
+              Accounts for <strong>25.7%</strong> of the total. Originates from restaurants, staff canteens, hotels, and event catering, primarily through plate waste and unserved prepared food.
+            </p>
+          </div>
+
+          <div class="source-pill-card retail">
+            <h4 class="source-pill-title">Retail & Supermarkets</h4>
+            <div class="source-pill-val-row">
+              <span class="source-pill-val" id="pill-retail-kg">15.1</span>
+              <span class="kpi-unit">kg / person</span>
+            </div>
+            <p class="source-pill-desc">
+              Represents <strong>13.1%</strong> of waste. Modern commercial inventory systems keep retail waste lower than homes, though cosmetic sorting of fresh produce remains an issue.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Regional Benchmark -->
+    <section class="section-block" id="regions">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Geographic Comparison</div>
+          <h2 class="section-title">Regional Food Waste Patterns</h2>
+          <p class="section-desc">
+            Comparing 17 global regions reveals that high per-person food waste is not restricted to high-income nations. Sub-Saharan Africa and Western Asia show per-capita numbers matching or exceeding Europe and North America.
+          </p>
+        </div>
+
+        <div class="grid-1-2">
+          <!-- Regional Ranking List & Quick Summary -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Top Waste Regions</h3>
+                <span class="card-subtitle">Highest per-capita averages</span>
+              </div>
+            </div>
+            <div class="country-list-scroll" id="regional-cards-list" style="max-height: 430px;">
+              <!-- Dynamically populated region summary cards -->
+            </div>
+          </div>
+
+          <!-- Regional Horizontal Bar Chart -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">All 17 Regions Ranked</h3>
+                <span class="card-subtitle">Average combined food waste (kg per capita per year)</span>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 430px;">
+              <canvas id="chart-regional-bars"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Machine Learning Prediction Studio -->
+    <section class="section-block" id="estimator">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Machine Learning Simulation</div>
+          <h2 class="section-title">Household Waste Estimator</h2>
+          <p class="section-desc">
+            Directly replicates the Random Forest Regressor trained in the Jupyter notebook. Adjust per-capita indicators and regional attributes to estimate national annual household waste in tonnes.
+          </p>
+        </div>
+
+        <div class="ml-simulator-container">
+          <!-- Left: Input Controls -->
+          <div class="ml-inputs-card">
+            <div class="card-header" style="margin-bottom: 12px;">
+              <h3 class="card-title">Simulation Parameters</h3>
+              <span class="card-subtitle">Live Random Forest inference (200 trees)</span>
+            </div>
+
+            <div class="preset-pills-row">
+              <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Presets:</span>
+              <button class="preset-pill active" id="preset-australia" onclick="FreshTrackApp.loadPreset('australia')">Australia (Notebook Ex.)</button>
+              <button class="preset-pill" id="preset-global" onclick="FreshTrackApp.loadPreset('global')">Global Average</button>
+              <button class="preset-pill" id="preset-high" onclick="FreshTrackApp.loadPreset('high')">High Waste Profile</button>
+              <button class="preset-pill" id="preset-low" onclick="FreshTrackApp.loadPreset('low')">Low Waste Profile</button>
+            </div>
+
+            <div class="grid-2" style="margin-bottom: 18px;">
+              <div class="control-item">
+                <label class="control-label" for="ml-input-region">Region</label>
+                <select class="select-custom" id="ml-input-region">
+                  <!-- Dynamically populated regions -->
+                </select>
+              </div>
+
+              <div class="control-item">
+                <label class="control-label" for="ml-input-confidence">Estimate Confidence</label>
+                <select class="select-custom" id="ml-input-confidence">
+                  <option value="High Confidence">High Confidence</option>
+                  <option value="Medium Confidence">Medium Confidence</option>
+                  <option value="Low Confidence">Low Confidence</option>
+                  <option value="Very Low Confidence">Very Low Confidence</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Sliders for per capita measurements -->
+            <div class="slider-group">
+              <div class="slider-header">
+                <span class="slider-label">Combined Food Waste</span>
+                <span class="slider-value-badge" id="badge-comb-val">133 kg/capita</span>
+              </div>
+              <input type="range" id="slider-comb" min="40" max="260" value="133" step="1">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span class="slider-label">Household Food Waste</span>
+                <span class="slider-value-badge" id="badge-hh-val">102 kg/capita</span>
+              </div>
+              <input type="range" id="slider-hh" min="20" max="190" value="102" step="1">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span class="slider-label">Food Service Food Waste</span>
+                <span class="slider-value-badge" id="badge-fs-val">22 kg/capita</span>
+              </div>
+              <input type="range" id="slider-fs" min="2" max="90" value="22" step="1">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span class="slider-label">Retail Food Waste</span>
+                <span class="slider-value-badge" id="badge-ret-val">9 kg/capita</span>
+              </div>
+              <input type="range" id="slider-ret" min="2" max="60" value="9" step="1">
+            </div>
+          </div>
+
+          <!-- Right: Output & Model Transparency -->
+          <div class="ml-result-card">
+            <div>
+              <div class="card-header" style="margin-bottom: 0;">
+                <h3 class="card-title">Estimated Household Waste</h3>
+                <span class="kpi-badge green">Model Output</span>
+              </div>
+
+              <div class="ml-pred-box">
+                <div class="ml-pred-label">Predicted Annual Household Waste</div>
+                <div class="ml-pred-number" id="ml-output-number">1,050,837</div>
+                <div class="ml-pred-unit">tonnes per year</div>
+              </div>
+
+              <div class="ml-explanation-box">
+                <p>
+                  <strong>How the estimate works:</strong> The notebook trains a 200-tree Random Forest regressor. Because country population is not directly provided in the notebook features, the algorithm uses region and per-capita patterns to scale the estimated national tonnage.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <!-- Test Set Metrics from Notebook Cell 16 -->
+              <div class="ml-metrics-strip">
+                <div class="ml-metric-item">
+                  <div class="ml-metric-title">Mean Error (MAE)</div>
+                  <div class="ml-metric-val">3.91M t</div>
+                </div>
+                <div class="ml-metric-item">
+                  <div class="ml-metric-title">Test Sample</div>
+                  <div class="ml-metric-val">43 countries</div>
+                </div>
+                <div class="ml-metric-item">
+                  <div class="ml-metric-title">Notebook Split</div>
+                  <div class="ml-metric-val">80% / 20%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actual vs Predicted Comparison Chart from Notebook -->
+        <div class="dashboard-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Actual vs. Predicted Waste (Test Records)</h3>
+              <span class="card-subtitle">Comparison points from notebook step 9 showing how predictions track actual tonnages</span>
+            </div>
+          </div>
+          <div class="chart-container" style="height: 340px;">
+            <canvas id="chart-actual-vs-predicted"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Complete Data Registry -->
+    <section class="section-block" id="registry">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Full Data Records</div>
+          <h2 class="section-title">Country Dataset Registry</h2>
+          <p class="section-desc">
+            Browse the complete 214-country table. Click column headers to sort, search by name, or export clean data to CSV or JSON format.
+          </p>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <input type="text" class="input-search" id="table-search-input" placeholder="Search country or region..." style="width: 260px;">
+              <select class="select-custom" id="table-region-filter" style="width: 200px;">
+                <option value="ALL">All Regions</option>
+              </select>
+            </div>
+            <div class="card-toolbar">
+              <button class="btn-pill" onclick="FreshTrackApp.exportCSV()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span>Export CSV</span>
+              </button>
+              <button class="btn-pill" onclick="FreshTrackApp.exportJSON()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span>Export JSON</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="dataset-table">
+              <thead>
+                <tr>
+                  <th data-sort="name">Country</th>
+                  <th data-sort="region">Region</th>
+                  <th data-sort="combined_kg" class="num-cell">Combined (kg/capita)</th>
+                  <th data-sort="household_kg" class="num-cell">Household (kg/capita)</th>
+                  <th data-sort="household_tonnes" class="num-cell">Household (Tonnes)</th>
+                  <th data-sort="retail_kg" class="num-cell">Retail (kg/capita)</th>
+                  <th data-sort="foodservice_kg" class="num-cell">Food Service (kg/capita)</th>
+                  <th data-sort="confidence">Confidence</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Dynamically populated table rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-pagination-bar">
+            <span class="page-indicator" id="table-pagination-info">Showing 1-15 of 214 countries</span>
+            <div class="pagination-buttons" id="table-pagination-buttons">
+              <!-- Dynamically generated pagination -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Slide-out Country Detail Drawer / Modal -->
+  <div class="drawer-backdrop" id="country-drawer-backdrop" onclick="FreshTrackApp.closeDrawer(event)">
+    <div class="drawer-panel" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <div>
+          <span class="badge-tag" id="drawer-region">Western Europe</span>
+          <h3 class="drawer-country-title" id="drawer-country-name">Country Name</h3>
+        </div>
+        <button class="btn-icon" onclick="FreshTrackApp.closeDrawer()" aria-label="Close country details">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="drawer-stat-row">
+          <div class="drawer-box">
+            <div class="drawer-box-title">Combined Waste</div>
+            <div class="drawer-box-val" id="drawer-comb-val">126 kg</div>
+            <span class="kpi-unit">per person / year</span>
+          </div>
+          <div class="drawer-box">
+            <div class="drawer-box-title">Annual Household Total</div>
+            <div class="drawer-box-val" id="drawer-hh-tonnes">3.1M t</div>
+            <span class="kpi-unit">tonnes / year</span>
+          </div>
+        </div>
+
+        <div class="drawer-box">
+          <div class="drawer-box-title">Global Comparison</div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-top: 4px;" id="drawer-benchmark-text">
+            7% below the global per-capita average.
+          </div>
+        </div>
+
+        <div class="drawer-box">
+          <div class="drawer-box-title" style="margin-bottom: 12px;">Waste Breakdown by Source</div>
+          <div class="drawer-sector-bar">
+            <div class="sector-bar-item">
+              <div class="sector-bar-label">
+                <span>Household</span>
+                <span id="drawer-hh-meter-label">82 kg (65%)</span>
+              </div>
+              <div class="sector-bar-track">
+                <div class="sector-bar-progress" id="drawer-hh-bar" style="width: 65%; background: var(--accent-emerald);"></div>
+              </div>
+            </div>
+
+            <div class="sector-bar-item">
+              <div class="sector-bar-label">
+                <span>Food Service</span>
+                <span id="drawer-fs-meter-label">28 kg (22%)</span>
+              </div>
+              <div class="sector-bar-track">
+                <div class="sector-bar-progress" id="drawer-fs-bar" style="width: 22%; background: var(--accent-blue);"></div>
+              </div>
+            </div>
+
+            <div class="sector-bar-item">
+              <div class="sector-bar-label">
+                <span>Retail</span>
+                <span id="drawer-ret-meter-label">16 kg (13%)</span>
+              </div>
+              <div class="sector-bar-track">
+                <div class="sector-bar-progress" id="drawer-ret-bar" style="width: 13%; background: var(--accent-amber);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-stat-row">
+          <div class="drawer-box">
+            <div class="drawer-box-title">UN M49 Code</div>
+            <div class="drawer-box-val" id="drawer-m49" style="font-size: 1.15rem;">004</div>
+          </div>
+          <div class="drawer-box">
+            <div class="drawer-box-title">Report Confidence</div>
+            <div id="drawer-conf-container" style="margin-top: 4px;">
+              <span class="conf-badge very-low" id="drawer-conf-badge">Very Low</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn-pill btn-primary" id="drawer-source-link" style="width: 100%; justify-content: center;">
+          <span>View Official UNEP Report</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="brand">
+        <div class="brand-icon" style="width: 32px; height: 32px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" style="font-size: 1.1rem;">FreshTrack</span>
+          <span class="brand-subtitle" style="font-size: 0.68rem;">Food Waste Intelligence</span>
+        </div>
+      </div>
+      <div class="footer-desc">
+        Data synthesized from the UNEP Food Waste Index country dataset • Clean English analytics & real machine learning simulation
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/chart.umd.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
