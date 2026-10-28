@@ -207,7 +207,7 @@ div[data-testid="stCaptionContainer"] {{
 
 .stButton > button,
 div[data-testid="stFormSubmitButton"] > button,
-div[data-testid="stDownloadButton"] > button {
+div[data-testid="stDownloadButton"] > button {{
     background: linear-gradient(135deg, {FOREST} 0%, #102e1f 100%) !important;
     color: #ffffff !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -218,7 +218,7 @@ div[data-testid="stDownloadButton"] > button {
     box-shadow: 0 4px 12px rgba(25, 72, 48, 0.25) !important;
     transition: all 0.2s ease !important;
     width: 100% !important;
-}
+}}
 
 .stButton > button *,
 .stButton > button p,
@@ -231,20 +231,20 @@ div[data-testid="stFormSubmitButton"] > button div,
 div[data-testid="stDownloadButton"] > button *,
 div[data-testid="stDownloadButton"] > button p,
 div[data-testid="stDownloadButton"] > button span,
-div[data-testid="stDownloadButton"] > button div {
+div[data-testid="stDownloadButton"] > button div {{
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
     font-weight: 700 !important;
-}
+}}
 
 .stButton > button:hover,
 div[data-testid="stFormSubmitButton"] > button:hover,
-div[data-testid="stDownloadButton"] > button:hover {
+div[data-testid="stDownloadButton"] > button:hover {{
     background: linear-gradient(135deg, #225c3d 0%, #153a27 100%) !important;
     color: #ffffff !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 6px 16px rgba(25, 72, 48, 0.35) !important;
-}
+}}
 
 .stButton > button:hover *,
 .stButton > button:hover p,
@@ -254,31 +254,31 @@ div[data-testid="stFormSubmitButton"] > button:hover p,
 div[data-testid="stFormSubmitButton"] > button:hover span,
 div[data-testid="stDownloadButton"] > button:hover *,
 div[data-testid="stDownloadButton"] > button:hover p,
-div[data-testid="stDownloadButton"] > button:hover span {
+div[data-testid="stDownloadButton"] > button:hover span {{
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
-}
+}}
 
 .stButton > button:active,
 .stButton > button:focus,
 div[data-testid="stFormSubmitButton"] > button:active,
 div[data-testid="stFormSubmitButton"] > button:focus,
 div[data-testid="stDownloadButton"] > button:active,
-div[data-testid="stDownloadButton"] > button:focus {
+div[data-testid="stDownloadButton"] > button:focus {{
     color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.6) !important;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
-}
+}}
 
 .stButton > button:active *,
 .stButton > button:focus *,
 div[data-testid="stFormSubmitButton"] > button:active *,
 div[data-testid="stFormSubmitButton"] > button:focus *,
 div[data-testid="stDownloadButton"] > button:active *,
-div[data-testid="stDownloadButton"] > button:focus * {
+div[data-testid="stDownloadButton"] > button:focus * {{
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
-}
+}}
 
 div[data-testid="stMetric"] {{
     background: {BG_SURFACE};
