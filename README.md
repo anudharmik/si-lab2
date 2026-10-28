@@ -27,12 +27,19 @@ A modern, executive dashboard frontend built from the [FreshTrack Food Waste Ana
 
 ---
 
-## How to Run Locally
+## How to Run
 
-### Option 1: Standalone Browser (Zero Installation)
-Simply double-click or open [index.html](file:///e:/si-lab-kunte/index.html) in any modern web browser (Chrome, Edge, Firefox, Safari).
+### Option 1: Streamlit Cloud or Local Streamlit
+Run with Streamlit:
+```bash
+streamlit run app.py
+```
+Or deploy directly to [Streamlit Community Cloud](https://share.streamlit.io/) with `app.py` or `streamlit_app.py` as the entrypoint (dependencies are specified in `requirements.txt`).
 
-### Option 2: Using the Included Python Server
+### Option 2: Standalone Browser (Zero Installation)
+Simply double-click or open [index.html](file:///e:/si-lab-kunte/index.html) in any modern web browser.
+
+### Option 3: Using the Included Python Server
 Run the lightweight zero-dependency server:
 ```bash
 python server.py
@@ -48,9 +55,12 @@ http://localhost:8000/index.html
 
 ```
 si-lab-kunte/
-├── index.html                                        # Semantic, accessible dashboard structure
-├── style.css                                         # Design system, CSS tokens, dark/light themes, typography
-├── app.js                                            # Dashboard controller, filter engine, Chart.js, ML predictor
+├── app.py                                            # Streamlit production app (quiet-luxury theme, ML inference)
+├── streamlit_app.py                                  # Streamlit Cloud entrypoint alias
+├── requirements.txt                                  # Pinned dependencies for Streamlit Cloud
+├── index.html                                        # Semantic, accessible web dashboard structure
+├── style.css                                         # Design system, CSS tokens, quiet-luxury palette, cursive fonts
+├── app.js                                            # Web dashboard controller, filter engine, Chart.js, ML predictor
 ├── data.js                                           # Self-contained data & model bundle for zero-CORS offline execution
 ├── server.py                                         # Zero-dependency local development server
 ├── assets/
