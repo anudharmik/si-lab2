@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
   <meta name="description" content="Explore global food waste analytics across 214 countries and run interactive machine-learning estimates based on the UNEP Food Waste Index.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=Outfit:wght@400;500;600;700;800&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,8 +24,8 @@
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-title">FreshTrack</span>
-          <span class="brand-subtitle">Food Waste Intelligence</span>
+          <span class="brand-title">FreshTrack <span class="brand-cursive">Observatory</span></span>
+          <span class="brand-subtitle">Food Waste Intelligence & UNEP Analytics</span>
         </div>
       </a>
 
@@ -43,15 +43,7 @@
       <div class="nav-actions">
         <button class="btn-icon" id="theme-toggle" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
           <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
         <button class="btn-pill btn-primary" id="btn-quick-estimate" onclick="document.getElementById('estimator').scrollIntoView({behavior:'smooth'})">
@@ -74,11 +66,13 @@
               <span class="pulse-dot"></span>
               Global Baseline Analytics
             </span>
-            <span class="badge-source">United Nations Environment Programme (UNEP) Food Waste Index</span>
+            <span class="badge-script">United Nations Environment Programme (UNEP) Food Waste Index</span>
           </div>
 
+          <div class="hero-kicker-script">A Comprehensive Planetary Food Loss & Preservation Dossier</div>
+
           <h1 class="hero-title">
-            Understanding Global Food Waste: <span class="highlight">931 Million Tonnes</span> Lost Annually
+            Understanding Global Food Waste: <span class="highlight-serif">931 Million Tonnes</span> Lost Annually
           </h1>
 
           <p class="hero-desc">
@@ -149,6 +143,7 @@
                 <span class="kpi-value" id="kpi-total-tonnes">931.3M</span>
                 <span class="kpi-unit">tonnes / year</span>
               </div>
+              <span class="kpi-cursive-sub">aggregate planetary loss</span>
               <p class="kpi-note">Sum of household, retail, and food service estimates across selected nations.</p>
               <div class="kpi-meter">
                 <div class="kpi-meter-fill" id="kpi-total-meter" style="width: 100%;"></div>
@@ -164,9 +159,10 @@
                 <span class="kpi-value" id="kpi-household-share">61.2%</span>
                 <span class="kpi-unit" id="kpi-household-tonnes">(570.0M t)</span>
               </div>
+              <span class="kpi-cursive-sub">private kitchens & tables</span>
               <p class="kpi-note">Kitchen and home waste represents the majority of wasted food worldwide.</p>
               <div class="kpi-meter">
-                <div class="kpi-meter-fill" id="kpi-household-meter" style="width: 61.2%; background: #10b981;"></div>
+                <div class="kpi-meter-fill" id="kpi-household-meter" style="width: 61.2%;"></div>
               </div>
             </div>
 
@@ -179,9 +175,10 @@
                 <span class="kpi-value" id="kpi-avg-combined">126.8</span>
                 <span class="kpi-unit">kg / person / year</span>
               </div>
+              <span class="kpi-cursive-sub">individual yearly discard</span>
               <p class="kpi-note">Includes 84.3 kg household, 27.4 kg food service, and 15.1 kg retail.</p>
               <div class="kpi-meter">
-                <div class="kpi-meter-fill" id="kpi-percapita-meter" style="width: 78%; background: #38bdf8;"></div>
+                <div class="kpi-meter-fill" id="kpi-percapita-meter" style="width: 78%; background: var(--accent-slate);"></div>
               </div>
             </div>
 
@@ -194,9 +191,10 @@
                 <span class="kpi-value" id="kpi-countries-count">214</span>
                 <span class="kpi-unit">nations tracked</span>
               </div>
+              <span class="kpi-cursive-sub">UN M49 standardized territories</span>
               <p class="kpi-note">Official UN M49 standardized country records from the Food Waste Index report.</p>
               <div class="kpi-meter">
-                <div class="kpi-meter-fill" id="kpi-coverage-meter" style="width: 100%; background: #f59e0b;"></div>
+                <div class="kpi-meter-fill" id="kpi-coverage-meter" style="width: 100%; background: var(--accent-champagne);"></div>
               </div>
             </div>
           </div>
@@ -208,7 +206,7 @@
     <section class="section-block" id="countries">
       <div class="container">
         <div class="section-header">
-          <div class="section-eyebrow">Country Intelligence</div>
+          <div class="section-eyebrow"><span class="section-script">Territorial Registry</span> • Country Intelligence</div>
           <h2 class="section-title">Country Rankings & Explorer</h2>
           <p class="section-desc">
             Compare national estimates, inspect per-capita habits versus total tonnage volumes, and click any country to view an individual waste profile.
@@ -260,7 +258,7 @@
     <section class="section-block" id="sources">
       <div class="container">
         <div class="section-header">
-          <div class="section-eyebrow">Sector Distribution</div>
+          <div class="section-eyebrow"><span class="section-script">Empirical Distribution</span> • Sector Breakdown</div>
           <h2 class="section-title">Where Does Food Waste Originate?</h2>
           <p class="section-desc">
             Food waste is split across three key sectors: households, retail grocery shops, and the food-service industry. Explore their relative contribution and per-person numbers.
@@ -337,7 +335,7 @@
     <section class="section-block" id="regions">
       <div class="container">
         <div class="section-header">
-          <div class="section-eyebrow">Geographic Comparison</div>
+          <div class="section-eyebrow"><span class="section-script">Continental Benchmarks</span> • Geographic Comparison</div>
           <h2 class="section-title">Regional Food Waste Patterns</h2>
           <p class="section-desc">
             Comparing 17 global regions reveals that high per-person food waste is not restricted to high-income nations. Sub-Saharan Africa and Western Asia show per-capita numbers matching or exceeding Europe and North America.
@@ -378,7 +376,7 @@
     <section class="section-block" id="estimator">
       <div class="container">
         <div class="section-header">
-          <div class="section-eyebrow">Machine Learning Simulation</div>
+          <div class="section-eyebrow"><span class="section-script">Predictive Intelligence</span> • Machine Learning Simulation</div>
           <h2 class="section-title">Household Waste Estimator</h2>
           <p class="section-desc">
             Directly replicates the Random Forest Regressor trained in the Jupyter notebook. Adjust per-capita indicators and regional attributes to estimate national annual household waste in tonnes.
@@ -463,6 +461,7 @@
               </div>
 
               <div class="ml-pred-box">
+                <span class="ml-cursive-stamp">Random Forest Projection</span>
                 <div class="ml-pred-label">Predicted Annual Household Waste</div>
                 <div class="ml-pred-number" id="ml-output-number">1,050,837</div>
                 <div class="ml-pred-unit">tonnes per year</div>
@@ -514,7 +513,7 @@
     <section class="section-block" id="registry">
       <div class="container">
         <div class="section-header">
-          <div class="section-eyebrow">Full Data Records</div>
+          <div class="section-eyebrow"><span class="section-script">Archival Repository</span> • Full Data Records</div>
           <h2 class="section-title">Country Dataset Registry</h2>
           <p class="section-desc">
             Browse the complete 214-country table. Click column headers to sort, search by name, or export clean data to CSV or JSON format.
@@ -584,6 +583,7 @@
     <div class="drawer-panel" onclick="event.stopPropagation()">
       <div class="drawer-header">
         <div>
+          <span class="drawer-cursive-flourish">Territorial Dossier</span>
           <span class="badge-tag" id="drawer-region">Western Europe</span>
           <h3 class="drawer-country-title" id="drawer-country-name">Country Name</h3>
         </div>
@@ -625,7 +625,7 @@
                 <span id="drawer-hh-meter-label">82 kg (65%)</span>
               </div>
               <div class="sector-bar-track">
-                <div class="sector-bar-progress" id="drawer-hh-bar" style="width: 65%; background: var(--accent-emerald);"></div>
+                <div class="sector-bar-progress" id="drawer-hh-bar" style="width: 65%; background: var(--accent-forest);"></div>
               </div>
             </div>
 
@@ -635,7 +635,7 @@
                 <span id="drawer-fs-meter-label">28 kg (22%)</span>
               </div>
               <div class="sector-bar-track">
-                <div class="sector-bar-progress" id="drawer-fs-bar" style="width: 22%; background: var(--accent-blue);"></div>
+                <div class="sector-bar-progress" id="drawer-fs-bar" style="width: 22%; background: var(--accent-slate);"></div>
               </div>
             </div>
 
@@ -645,7 +645,7 @@
                 <span id="drawer-ret-meter-label">16 kg (13%)</span>
               </div>
               <div class="sector-bar-track">
-                <div class="sector-bar-progress" id="drawer-ret-bar" style="width: 13%; background: var(--accent-amber);"></div>
+                <div class="sector-bar-progress" id="drawer-ret-bar" style="width: 13%; background: var(--accent-champagne);"></div>
               </div>
             </div>
           </div>
@@ -689,12 +689,15 @@
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-title" style="font-size: 1.1rem;">FreshTrack</span>
+          <span class="brand-title" style="font-size: 1.1rem;">FreshTrack <span class="brand-cursive" style="font-size: 1.35rem;">Observatory</span></span>
           <span class="brand-subtitle" style="font-size: 0.68rem;">Food Waste Intelligence</span>
         </div>
       </div>
+      <div>
+        <span class="footer-quote">"Every harvest preserved is a world sustained."</span>
+      </div>
       <div class="footer-desc">
-        Data synthesized from the UNEP Food Waste Index country dataset • Clean English analytics & real machine learning simulation
+        Data synthesized from the UNEP Food Waste Index country dataset • Real Random Forest ML inference
       </div>
     </div>
   </footer>

@@ -23,7 +23,7 @@ const FreshTrackApp = (() => {
       page: 1,
       pageSize: 15
     },
-    theme: localStorage.getItem('freshtrack-theme') || 'dark',
+    theme: localStorage.getItem('freshtrack-theme') || 'light',
     charts: {}
   };
 
@@ -322,16 +322,40 @@ const FreshTrackApp = (() => {
   }
 
   function getChartTextColor() {
-    return state.theme === 'dark' ? '#9cb1a4' : '#4b6354';
+    return state.theme === 'dark' ? '#9cb0a4' : '#526359';
   }
 
   function getChartGridColor() {
-    return state.theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+    return state.theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(28, 44, 34, 0.06)';
+  }
+
+  function getChartTooltipOptions(customCallbacks = {}) {
+    const isDark = state.theme === 'dark';
+    return {
+      backgroundColor: isDark ? 'rgba(21, 29, 24, 0.95)' : 'rgba(255, 255, 255, 0.97)',
+      titleColor: isDark ? '#f2f7f4' : '#17241d',
+      bodyColor: isDark ? '#9cb0a4' : '#526359',
+      borderColor: isDark ? 'rgba(62, 130, 99, 0.25)' : 'rgba(28, 44, 34, 0.12)',
+      borderWidth: 1,
+      padding: 12,
+      cornerRadius: 8,
+      titleFont: { family: "'Outfit', sans-serif", size: 13, weight: '700' },
+      bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 12 },
+      callbacks: customCallbacks
+    };
   }
 
   function updateChartTheme() {
     const textColor = getChartTextColor();
     const gridColor = getChartGridColor();
+    const isDark = state.theme === 'dark';
+
+    if (state.charts.sourcesDonut && state.charts.sourcesDonut.data.datasets[0]) {
+      state.charts.sourcesDonut.data.datasets[0].borderColor = isDark ? '#151d18' : '#ffffff';
+    }
+    if (state.charts.actualVsPred && state.charts.actualVsPred.data.datasets[1]) {
+      state.charts.actualVsPred.data.datasets[1].borderColor = isDark ? 'rgba(255, 255, 255, 0.25)' : 'rgba(28, 44, 34, 0.22)';
+    }
 
     Object.values(state.charts).forEach(chart => {
       if (!chart) return;
@@ -339,10 +363,23 @@ const FreshTrackApp = (() => {
         if (chart.options.scales.x) {
           chart.options.scales.x.ticks.color = textColor;
           chart.options.scales.x.grid.color = gridColor;
+          if (chart.options.scales.x.title) chart.options.scales.x.title.color = textColor;
         }
         if (chart.options.scales.y) {
           chart.options.scales.y.ticks.color = textColor;
           chart.options.scales.y.grid.color = gridColor;
+          if (chart.options.scales.y.title) chart.options.scales.y.title.color = textColor;
+        }
+      }
+      if (chart.options.plugins) {
+        if (chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+          chart.options.plugins.legend.labels.color = textColor;
+        }
+        if (chart.options.plugins.tooltip) {
+          chart.options.plugins.tooltip.backgroundColor = isDark ? 'rgba(21, 29, 24, 0.95)' : 'rgba(255, 255, 255, 0.97)';
+          chart.options.plugins.tooltip.titleColor = isDark ? '#f2f7f4' : '#17241d';
+          chart.options.plugins.tooltip.bodyColor = isDark ? '#9cb0a4' : '#526359';
+          chart.options.plugins.tooltip.borderColor = isDark ? 'rgba(62, 130, 99, 0.25)' : 'rgba(28, 44, 34, 0.12)';
         }
       }
       chart.update();
@@ -361,8 +398,8 @@ const FreshTrackApp = (() => {
         datasets: [{
           label: 'Waste',
           data: [],
-          backgroundColor: '#10b981',
-          hoverBackgroundColor: '#34d399',
+          backgroundColor: '#255a40',
+          hoverBackgroundColor: '#327553',
           borderRadius: 6
         }]
       },
@@ -372,21 +409,13 @@ const FreshTrackApp = (() => {
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(16, 28, 21, 0.95)',
-            titleFont: { family: "'Outfit', sans-serif", size: 14, weight: '700' },
-            bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
-            padding: 12,
-            borderColor: 'rgba(74, 222, 128, 0.3)',
-            borderWidth: 1,
-            callbacks: {
-              label: (ctx) => {
-                const metric = state.rankingMetric;
-                const unit = metric.includes('tonnes') ? 'tonnes/year' : 'kg/person/year';
-                return ` ${ctx.parsed.x.toLocaleString()} ${unit}`;
-              }
+          tooltip: getChartTooltipOptions({
+            label: (ctx) => {
+              const metric = state.rankingMetric;
+              const unit = metric.includes('tonnes') ? 'tonnes/year' : 'kg/person/year';
+              return ` ${ctx.parsed.x.toLocaleString()} ${unit}`;
             }
-          }
+          })
         },
         scales: {
           x: {
@@ -429,18 +458,18 @@ const FreshTrackApp = (() => {
     if (metric === 'combined_kg') {
       if (titleEl) titleEl.textContent = 'Top 10 Countries by Combined Food Waste';
       if (subEl) subEl.textContent = 'Ranked by combined kilograms per person per year';
-      chart.data.datasets[0].backgroundColor = '#10b981';
-      chart.data.datasets[0].hoverBackgroundColor = '#34d399';
+      chart.data.datasets[0].backgroundColor = '#255a40';
+      chart.data.datasets[0].hoverBackgroundColor = '#327553';
     } else if (metric === 'household_tonnes') {
       if (titleEl) titleEl.textContent = 'Top 10 Countries by Household Volume';
       if (subEl) subEl.textContent = 'Ranked by total annual tonnes of household waste';
-      chart.data.datasets[0].backgroundColor = '#38bdf8';
-      chart.data.datasets[0].hoverBackgroundColor = '#7dd3fc';
+      chart.data.datasets[0].backgroundColor = '#486a7d';
+      chart.data.datasets[0].hoverBackgroundColor = '#5c849c';
     } else {
       if (titleEl) titleEl.textContent = 'Top 10 Countries by Household Per-Capita';
       if (subEl) subEl.textContent = 'Ranked by annual kilograms per person from private homes';
-      chart.data.datasets[0].backgroundColor = '#f59e0b';
-      chart.data.datasets[0].hoverBackgroundColor = '#fbbf24';
+      chart.data.datasets[0].backgroundColor = '#9e7a42';
+      chart.data.datasets[0].hoverBackgroundColor = '#b58f53';
     }
 
     chart.update();
@@ -462,8 +491,9 @@ const FreshTrackApp = (() => {
             sources.shares_percent.foodservice,
             sources.shares_percent.retail
           ],
-          backgroundColor: ['#10b981', '#38bdf8', '#f59e0b'],
-          borderColor: 'transparent',
+          backgroundColor: ['#255a40', '#486a7d', '#9e7a42'],
+          borderColor: state.theme === 'dark' ? '#151d18' : '#ffffff',
+          borderWidth: 2,
           hoverOffset: 6
         }]
       },
@@ -480,15 +510,9 @@ const FreshTrackApp = (() => {
               padding: 16
             }
           },
-          tooltip: {
-            backgroundColor: 'rgba(16, 28, 21, 0.95)',
-            titleFont: { family: "'Outfit', sans-serif", size: 14, weight: '700' },
-            bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
-            padding: 12,
-            callbacks: {
-              label: (ctx) => ` ${ctx.label}: ${ctx.parsed}% of global waste`
-            }
-          }
+          tooltip: getChartTooltipOptions({
+            label: (ctx) => ` ${ctx.label}: ${ctx.parsed}% of global waste`
+          })
         }
       }
     });
@@ -507,7 +531,7 @@ const FreshTrackApp = (() => {
         datasets: [{
           label: 'Average kg / person / year',
           data: [avg.household, avg.foodservice, avg.retail],
-          backgroundColor: ['#10b981', '#38bdf8', '#f59e0b'],
+          backgroundColor: ['#255a40', '#486a7d', '#9e7a42'],
           borderRadius: 8
         }]
       },
@@ -516,14 +540,9 @@ const FreshTrackApp = (() => {
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(16, 28, 21, 0.95)',
-            titleFont: { family: "'Outfit', sans-serif", size: 14, weight: '700' },
-            padding: 12,
-            callbacks: {
-              label: (ctx) => ` Average: ${ctx.parsed.y} kg/person/year`
-            }
-          }
+          tooltip: getChartTooltipOptions({
+            label: (ctx) => ` Average: ${ctx.parsed.y} kg/person/year`
+          })
         },
         scales: {
           x: { grid: { display: false }, ticks: { color: getChartTextColor(), font: { weight: '600' } } },
@@ -552,7 +571,7 @@ const FreshTrackApp = (() => {
         datasets: [{
           label: 'Average combined food waste (kg/capita/year)',
           data: regions.map(r => r.avg_combined_kg),
-          backgroundColor: regions.map(r => r.avg_combined_kg >= 140 ? '#10b981' : '#52b788'),
+          backgroundColor: regions.map(r => r.avg_combined_kg >= 140 ? '#255a40' : '#478366'),
           borderRadius: 5
         }]
       },
@@ -565,14 +584,9 @@ const FreshTrackApp = (() => {
         },
         plugins: {
           legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(16, 28, 21, 0.95)',
-            titleFont: { family: "'Outfit', sans-serif", size: 13, weight: '700' },
-            padding: 12,
-            callbacks: {
-              label: (ctx) => ` Combined: ${ctx.parsed.x} kg/person/year`
-            }
-          }
+          tooltip: getChartTooltipOptions({
+            label: (ctx) => ` Combined: ${ctx.parsed.x} kg/person/year`
+          })
         },
         scales: {
           x: {
@@ -609,8 +623,8 @@ const FreshTrackApp = (() => {
           {
             label: 'Test Countries',
             data: testPts,
-            backgroundColor: '#10b981',
-            borderColor: '#34d399',
+            backgroundColor: '#255a40',
+            borderColor: '#3e8263',
             borderWidth: 1.5,
             pointRadius: 6,
             pointHoverRadius: 8
@@ -619,7 +633,7 @@ const FreshTrackApp = (() => {
             label: 'Perfect Match (45° Identity)',
             data: [{ x: 0, y: 0 }, { x: maxVal, y: maxVal }],
             type: 'line',
-            borderColor: 'rgba(255, 255, 255, 0.25)',
+            borderColor: state.theme === 'dark' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(28, 44, 34, 0.22)',
             borderDash: [5, 5],
             fill: false,
             pointRadius: 0
@@ -633,25 +647,20 @@ const FreshTrackApp = (() => {
           legend: {
             labels: { color: getChartTextColor(), font: { size: 12 } }
           },
-          tooltip: {
-            backgroundColor: 'rgba(16, 28, 21, 0.95)',
-            titleFont: { family: "'Outfit', sans-serif", size: 13, weight: '700' },
-            padding: 12,
-            callbacks: {
-              title: (items) => {
-                const raw = items[0].raw;
-                return raw.country ? `${raw.country} (${raw.region})` : 'Parity Line';
-              },
-              label: (ctx) => {
-                const raw = ctx.raw;
-                if (!raw.country) return '';
-                return [
-                  ` Actual: ${fmt.dec(raw.x, 2)}M tonnes`,
-                  ` Predicted: ${fmt.dec(raw.y, 2)}M tonnes`
-                ];
-              }
+          tooltip: getChartTooltipOptions({
+            title: (items) => {
+              const raw = items[0].raw;
+              return raw.country ? `${raw.country} (${raw.region})` : 'Parity Line';
+            },
+            label: (ctx) => {
+              const raw = ctx.raw;
+              if (!raw.country) return '';
+              return [
+                ` Actual: ${fmt.dec(raw.x, 2)}M tonnes`,
+                ` Predicted: ${fmt.dec(raw.y, 2)}M tonnes`
+              ];
             }
-          }
+          })
         },
         scales: {
           x: {
