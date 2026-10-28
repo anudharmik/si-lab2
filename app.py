@@ -75,6 +75,10 @@ p, span, label {{
     color: #1a2920;
 }}
 
+button p, button span {{
+    color: #ffffff !important;
+}}
+
 label {{
     color: #0a130e !important;
     font-weight: 700 !important;
@@ -201,22 +205,80 @@ div[data-testid="stCaptionContainer"] {{
     margin-top: 6px;
 }}
 
-.stButton>button {{
-    background: linear-gradient(135deg, {FOREST} 0%, #102e1f 100%);
+.stButton > button,
+div[data-testid="stFormSubmitButton"] > button,
+div[data-testid="stDownloadButton"] > button {
+    background: linear-gradient(135deg, {FOREST} 0%, #102e1f 100%) !important;
     color: #ffffff !important;
-    border: none;
-    border-radius: 9999px;
-    padding: 8px 24px;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(25, 72, 48, 0.25);
-    transition: all 0.2s ease;
-}}
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 9999px !important;
+    padding: 8px 16px !important;
+    font-size: 0.84rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(25, 72, 48, 0.25) !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+}
 
-.stButton>button:hover {{
-    background: linear-gradient(135deg, #225c3d 0%, #153a27 100%);
+.stButton > button *,
+.stButton > button p,
+.stButton > button span,
+.stButton > button div,
+div[data-testid="stFormSubmitButton"] > button *,
+div[data-testid="stFormSubmitButton"] > button p,
+div[data-testid="stFormSubmitButton"] > button span,
+div[data-testid="stFormSubmitButton"] > button div,
+div[data-testid="stDownloadButton"] > button *,
+div[data-testid="stDownloadButton"] > button p,
+div[data-testid="stDownloadButton"] > button span,
+div[data-testid="stDownloadButton"] > button div {
     color: #ffffff !important;
-    transform: translateY(-1px);
-}}
+    -webkit-text-fill-color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.stButton > button:hover,
+div[data-testid="stFormSubmitButton"] > button:hover,
+div[data-testid="stDownloadButton"] > button:hover {
+    background: linear-gradient(135deg, #225c3d 0%, #153a27 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(25, 72, 48, 0.35) !important;
+}
+
+.stButton > button:hover *,
+.stButton > button:hover p,
+.stButton > button:hover span,
+div[data-testid="stFormSubmitButton"] > button:hover *,
+div[data-testid="stFormSubmitButton"] > button:hover p,
+div[data-testid="stFormSubmitButton"] > button:hover span,
+div[data-testid="stDownloadButton"] > button:hover *,
+div[data-testid="stDownloadButton"] > button:hover p,
+div[data-testid="stDownloadButton"] > button:hover span {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+.stButton > button:active,
+.stButton > button:focus,
+div[data-testid="stFormSubmitButton"] > button:active,
+div[data-testid="stFormSubmitButton"] > button:focus,
+div[data-testid="stDownloadButton"] > button:active,
+div[data-testid="stDownloadButton"] > button:focus {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+}
+
+.stButton > button:active *,
+.stButton > button:focus *,
+div[data-testid="stFormSubmitButton"] > button:active *,
+div[data-testid="stFormSubmitButton"] > button:focus *,
+div[data-testid="stDownloadButton"] > button:active *,
+div[data-testid="stDownloadButton"] > button:focus * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
 
 div[data-testid="stMetric"] {{
     background: {BG_SURFACE};
@@ -700,13 +762,13 @@ def main():
             st.markdown("**Quick Preset Scenarios:**")
             p_cols = st.columns(4)
             preset = "custom"
-            if p_cols[0].button("🇦🇺 Australia (Notebook Ex.)"):
+            if p_cols[0].button("🇦🇺 Australia (Notebook Ex.)", use_container_width=True):
                 preset = "australia"
-            if p_cols[1].button("🌍 Global Average"):
+            if p_cols[1].button("🌍 Global Average", use_container_width=True):
                 preset = "global"
-            if p_cols[2].button("📈 High Waste Profile"):
+            if p_cols[2].button("📈 High Waste Profile", use_container_width=True):
                 preset = "high"
-            if p_cols[3].button("📉 Low Waste Profile"):
+            if p_cols[3].button("📉 Low Waste Profile", use_container_width=True):
                 preset = "low"
                 
             defaults = {
@@ -728,7 +790,7 @@ def main():
                     conf_in = st.selectbox("Estimate Confidence", sorted(df[conf_col].dropna().unique()), index=sorted(df[conf_col].dropna().unique()).index(defaults["conf"]) if defaults["conf"] in df[conf_col].values else 0)
                     reg_in = st.selectbox("Region", sorted(df["Region"].dropna().unique()), index=sorted(df["Region"].dropna().unique()).index(defaults["reg"]) if defaults["reg"] in df["Region"].values else 0)
                 
-                submitted = st.form_submit_button("⚡ Compute Machine Learning Estimate")
+                submitted = st.form_submit_button("⚡ Compute Machine Learning Estimate", use_container_width=True)
             
             input_df = pd.DataFrame([{
                 FEATURES[0]: comb_in,
@@ -811,14 +873,16 @@ def main():
                 "⬇ Export Filtered Dataset (CSV)",
                 data=view_data.to_csv(index=False).encode("utf-8"),
                 file_name="freshtrack_filtered_dataset.csv",
-                mime="text/csv"
+                mime="text/csv",
+                use_container_width=True
             )
         with c_full:
             st.download_button(
                 "⬇ Export Full UNEP Dataset (CSV)",
                 data=df.to_csv(index=False).encode("utf-8"),
                 file_name="freshtrack_complete_dataset.csv",
-                mime="text/csv"
+                mime="text/csv",
+                use_container_width=True
             )
 
     # Footer
