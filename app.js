@@ -322,25 +322,25 @@ const FreshTrackApp = (() => {
   }
 
   function getChartTextColor() {
-    return state.theme === 'dark' ? '#9cb0a4' : '#526359';
+    return state.theme === 'dark' ? '#f2f7f4' : '#14221a';
   }
 
   function getChartGridColor() {
-    return state.theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(28, 44, 34, 0.06)';
+    return state.theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(28, 44, 34, 0.09)';
   }
 
   function getChartTooltipOptions(customCallbacks = {}) {
     const isDark = state.theme === 'dark';
     return {
-      backgroundColor: isDark ? 'rgba(21, 29, 24, 0.95)' : 'rgba(255, 255, 255, 0.97)',
-      titleColor: isDark ? '#f2f7f4' : '#17241d',
-      bodyColor: isDark ? '#9cb0a4' : '#526359',
-      borderColor: isDark ? 'rgba(62, 130, 99, 0.25)' : 'rgba(28, 44, 34, 0.12)',
+      backgroundColor: isDark ? 'rgba(15, 22, 17, 0.96)' : 'rgba(255, 255, 255, 0.98)',
+      titleColor: isDark ? '#ffffff' : '#0a130e',
+      bodyColor: isDark ? '#e0ebe3' : '#14221a',
+      borderColor: isDark ? 'rgba(62, 130, 99, 0.35)' : 'rgba(28, 44, 34, 0.18)',
       borderWidth: 1,
       padding: 12,
       cornerRadius: 8,
-      titleFont: { family: "'Outfit', sans-serif", size: 13, weight: '700' },
-      bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 12 },
+      titleFont: { family: "'Outfit', sans-serif", size: 13, weight: '800' },
+      bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 12, weight: '600' },
       callbacks: customCallbacks
     };
   }

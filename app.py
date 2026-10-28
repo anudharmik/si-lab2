@@ -25,17 +25,17 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Design Palette Constants (Quiet-Luxury Theme)
-FOREST = "#255a40"
-MINT = "#3e8263"
-GOLD = "#9e7a42"
-SLATE = "#486a7d"
+# Design Palette Constants (High-Contrast Quiet-Luxury Theme)
+FOREST = "#194830"
+MINT = "#225c3d"
+GOLD = "#68450e"
+SLATE = "#1a465e"
 BG_BASE = "#faf8f5"
 BG_SURFACE = "#ffffff"
-BG_ELEVATED = "#f5f3ee"
-TEXT_DARK = "#17241d"
-TEXT_MUTED = "#829288"
-BORDER = "rgba(28, 44, 34, 0.08)"
+BG_ELEVATED = "#f4f1ec"
+TEXT_DARK = "#0a130e"
+TEXT_MUTED = "#2e4034"
+BORDER = "rgba(25, 45, 32, 0.14)"
 
 # Custom Luxury & Cursive CSS Injection
 st.markdown(f"""
@@ -56,10 +56,33 @@ html, body, [class*="css"] {{
     border-right: 1px solid {BORDER};
 }}
 
+[data-testid="stSidebar"] * {{
+    color: {TEXT_DARK} !important;
+}}
+
+[data-testid="stSidebar"] div[data-testid="stCaptionContainer"] {{
+    color: #2e4034 !important;
+    font-weight: 700 !important;
+}}
+
 h1, h2, h3, h4 {{
     font-family: 'Outfit', sans-serif;
-    color: {TEXT_DARK};
-    font-weight: 700;
+    color: {TEXT_DARK} !important;
+    font-weight: 800 !important;
+}}
+
+p, span, label {{
+    color: #1a2920;
+}}
+
+label {{
+    color: #0a130e !important;
+    font-weight: 700 !important;
+}}
+
+div[data-testid="stCaptionContainer"] {{
+    color: #2e4034 !important;
+    font-weight: 600 !important;
 }}
 
 .hero-container {{
@@ -68,7 +91,7 @@ h1, h2, h3, h4 {{
     border-radius: 20px;
     padding: 34px 40px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px -2px rgba(25, 38, 30, 0.04);
+    box-shadow: 0 4px 20px -2px rgba(25, 38, 30, 0.05);
     position: relative;
     overflow: hidden;
 }}
@@ -83,8 +106,9 @@ h1, h2, h3, h4 {{
 
 .hero-kicker {{
     font-family: 'Pinyon Script', cursive;
-    font-size: 2.1rem;
+    font-size: 2.2rem;
     color: {GOLD};
+    font-weight: 600;
     margin-bottom: 4px;
     line-height: 1.2;
 }}
@@ -93,7 +117,7 @@ h1, h2, h3, h4 {{
     font-size: 2.35rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: {TEXT_DARK};
+    color: {TEXT_DARK} !important;
     margin: 0 0 10px 0;
 }}
 
@@ -105,19 +129,20 @@ h1, h2, h3, h4 {{
 }}
 
 .hero-desc {{
-    color: #526359;
+    color: #1a2920 !important;
     font-size: 1.05rem;
+    font-weight: 500;
     max-width: 820px;
     line-height: 1.6;
     margin: 0;
 }}
 
 .section-eyebrow {{
-    font-size: 0.76rem;
-    font-weight: 700;
+    font-size: 0.78rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: {TEXT_MUTED};
+    color: #1a2920 !important;
     margin-bottom: 4px;
     display: flex;
     align-items: center;
@@ -126,8 +151,9 @@ h1, h2, h3, h4 {{
 
 .section-script {{
     font-family: 'Pinyon Script', cursive;
-    font-size: 1.55rem;
-    color: {GOLD};
+    font-size: 1.65rem;
+    color: {GOLD} !important;
+    font-weight: 600;
     text-transform: none;
     letter-spacing: 0.02em;
 }}
@@ -137,56 +163,58 @@ h1, h2, h3, h4 {{
     border: 1px solid {BORDER};
     border-radius: 14px;
     padding: 20px 22px;
-    box-shadow: 0 2px 10px rgba(25, 38, 30, 0.03);
+    box-shadow: 0 2px 10px rgba(25, 38, 30, 0.04);
     height: 100%;
 }}
 
 .kpi-label {{
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #617369;
+    color: #1a2920;
     margin-bottom: 8px;
 }}
 
 .kpi-value {{
     font-family: 'Outfit', sans-serif;
-    font-size: 2.1rem;
+    font-size: 2.15rem;
     font-weight: 800;
-    color: {TEXT_DARK};
+    color: {TEXT_DARK} !important;
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
 }}
 
 .kpi-cursive-sub {{
     font-family: 'Pinyon Script', cursive;
-    font-size: 1.35rem;
+    font-size: 1.45rem;
     color: {GOLD};
+    font-weight: 600;
     margin-top: 4px;
     display: block;
 }}
 
 .kpi-note {{
-    font-size: 0.78rem;
-    color: {TEXT_MUTED};
+    font-size: 0.8rem;
+    color: #2e4034;
+    font-weight: 600;
     margin-top: 6px;
 }}
 
 .stButton>button {{
-    background: linear-gradient(135deg, {FOREST} 0%, #173b2a 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, {FOREST} 0%, #102e1f 100%);
+    color: #ffffff !important;
     border: none;
     border-radius: 9999px;
     padding: 8px 24px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(37, 90, 64, 0.2);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(25, 72, 48, 0.25);
     transition: all 0.2s ease;
 }}
 
 .stButton>button:hover {{
-    background: linear-gradient(135deg, #2e6e50 0%, #1e4d38 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, #225c3d 0%, #153a27 100%);
+    color: #ffffff !important;
     transform: translateY(-1px);
 }}
 
@@ -195,6 +223,21 @@ div[data-testid="stMetric"] {{
     border: 1px solid {BORDER};
     border-radius: 12px;
     padding: 16px 18px;
+    box-shadow: 0 2px 8px rgba(25, 38, 30, 0.03);
+}}
+
+div[data-testid="stMetricLabel"] p {{
+    color: #1a2920 !important;
+    font-weight: 800 !important;
+    font-size: 0.84rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}}
+
+div[data-testid="stMetricValue"] {{
+    color: {TEXT_DARK} !important;
+    font-weight: 800 !important;
+    font-family: 'Outfit', sans-serif !important;
 }}
 </style>
 """, unsafe_allow_html=True)
