@@ -239,6 +239,78 @@ div[data-testid="stMetricValue"] {{
     font-weight: 800 !important;
     font-family: 'Outfit', sans-serif !important;
 }}
+
+/* ---- Multiselect: tag chips ---- */
+[data-baseweb="tag"] {{
+    background-color: {FOREST} !important;
+    border-radius: 6px !important;
+    border: none !important;
+}}
+
+[data-baseweb="tag"] span {{
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+}}
+
+[data-baseweb="tag"] [aria-label="Delete"],
+[data-baseweb="tag"] button {{
+    color: rgba(255,255,255,0.8) !important;
+}}
+
+[data-baseweb="tag"] [aria-label="Delete"]:hover,
+[data-baseweb="tag"] button:hover {{
+    background: rgba(255,255,255,0.2) !important;
+    color: #ffffff !important;
+}}
+
+/* ---- Multiselect: input text typed in the box ---- */
+[data-baseweb="select"] input {{
+    color: {TEXT_DARK} !important;
+    caret-color: {FOREST} !important;
+    -webkit-text-fill-color: {TEXT_DARK} !important;
+    font-weight: 600 !important;
+}}
+
+/* ---- Multiselect: dropdown container ---- */
+[data-baseweb="select"] > div {{
+    background-color: {BG_SURFACE} !important;
+    border-color: rgba(25, 72, 48, 0.25) !important;
+}}
+
+/* ---- Multiselect: dropdown option list ---- */
+[data-baseweb="popover"] li {{
+    color: {TEXT_DARK} !important;
+    font-weight: 500 !important;
+    background-color: {BG_SURFACE} !important;
+}}
+
+[data-baseweb="popover"] li:hover {{
+    background-color: rgba(25, 72, 48, 0.08) !important;
+}}
+
+/* ---- Sidebar multiselect label ---- */
+[data-testid="stSidebar"] [data-baseweb="tag"] {{
+    background-color: {FOREST} !important;
+}}
+
+[data-testid="stSidebar"] [data-baseweb="tag"] span {{
+    color: #ffffff !important;
+}}
+
+/* ---- Text inputs (search boxes) ---- */
+[data-testid="stTextInput"] input {{
+    color: {TEXT_DARK} !important;
+    -webkit-text-fill-color: {TEXT_DARK} !important;
+    font-weight: 600 !important;
+    caret-color: {FOREST} !important;
+}}
+
+[data-testid="stTextInput"] input::placeholder {{
+    color: #3f5246 !important;
+    -webkit-text-fill-color: #3f5246 !important;
+    opacity: 0.8 !important;
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -447,10 +519,14 @@ def main():
                 plot_bgcolor="white",
                 paper_bgcolor="white",
                 height=420,
+                font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
                 xaxis_title="Household Waste (Tonnes/Year)",
+                xaxis=dict(tickfont=dict(color=TEXT_DARK, size=12), title_font=dict(color=TEXT_DARK)),
+                yaxis=dict(tickfont=dict(color=TEXT_DARK, size=12, weight="bold")),
                 yaxis_title="",
                 margin=dict(l=10, r=20, t=10, b=10)
             )
+            fig.update_traces(textfont_color="white", textfont_size=12)
             st.plotly_chart(fig, use_container_width=True)
             
         with col_right:
@@ -470,8 +546,10 @@ def main():
                 plot_bgcolor="white",
                 paper_bgcolor="white",
                 height=420,
+                font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
                 margin=dict(l=10, r=10, t=10, b=10),
-                legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5)
+                legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5,
+                            font=dict(color=TEXT_DARK, size=13))
             )
             st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -501,9 +579,13 @@ def main():
             plot_bgcolor="white",
             paper_bgcolor="white",
             height=500,
+            font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
+            xaxis=dict(tickfont=dict(color=TEXT_DARK, size=12), title_font=dict(color=TEXT_DARK)),
+            yaxis=dict(tickfont=dict(color=TEXT_DARK, size=12, weight="bold")),
             coloraxis_showscale=False,
             margin=dict(l=10, r=20, t=10, b=10)
         )
+        fig_rank.update_traces(textfont_color=TEXT_DARK, textfont_size=12)
         st.plotly_chart(fig_rank, use_container_width=True)
 
     # 3. Waste Sources Analysis
@@ -551,11 +633,23 @@ def main():
         b1, b2 = st.columns(2)
         with b1:
             fig_b1 = px.bar(source_df, x="Sector", y="Average kg/capita", color="Sector", color_discrete_sequence=[FOREST, SLATE, GOLD], text_auto=".1f")
-            fig_b1.update_layout(plot_bgcolor="white", paper_bgcolor="white", height=380, showlegend=False)
+            fig_b1.update_layout(
+                plot_bgcolor="white", paper_bgcolor="white", height=380, showlegend=False,
+                font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
+                xaxis=dict(tickfont=dict(color=TEXT_DARK, size=13, weight="bold")),
+                yaxis=dict(tickfont=dict(color=TEXT_DARK, size=12))
+            )
+            fig_b1.update_traces(textfont_color="white", textfont_size=13)
             st.plotly_chart(fig_b1, use_container_width=True)
         with b2:
             fig_b2 = px.bar(source_df, x="Sector", y="Total Tonnes", color="Sector", color_discrete_sequence=[FOREST, SLATE, GOLD], text_auto=".2s")
-            fig_b2.update_layout(plot_bgcolor="white", paper_bgcolor="white", height=380, showlegend=False)
+            fig_b2.update_layout(
+                plot_bgcolor="white", paper_bgcolor="white", height=380, showlegend=False,
+                font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
+                xaxis=dict(tickfont=dict(color=TEXT_DARK, size=13, weight="bold")),
+                yaxis=dict(tickfont=dict(color=TEXT_DARK, size=12))
+            )
+            fig_b2.update_traces(textfont_color="white", textfont_size=13)
             st.plotly_chart(fig_b2, use_container_width=True)
 
     # 4. Regional Benchmarks
@@ -583,10 +677,14 @@ def main():
             plot_bgcolor="white",
             paper_bgcolor="white",
             height=540,
+            font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
             coloraxis_showscale=False,
             xaxis_title="Combined Waste (kg per capita per year)",
+            xaxis=dict(tickfont=dict(color=TEXT_DARK, size=12), title_font=dict(color=TEXT_DARK)),
+            yaxis=dict(tickfont=dict(color=TEXT_DARK, size=12, weight="bold")),
             yaxis_title=""
         )
+        fig_reg.update_traces(textfont_color="white", textfont_size=12)
         st.plotly_chart(fig_reg, use_container_width=True)
 
     # 5. ML Prediction Studio
@@ -683,8 +781,12 @@ def main():
             fig_eval.update_layout(
                 plot_bgcolor="white",
                 paper_bgcolor="white",
+                font=dict(color=TEXT_DARK, family="Plus Jakarta Sans, sans-serif"),
                 xaxis_title="Actual Test Waste (Million tonnes/year)",
+                xaxis=dict(tickfont=dict(color=TEXT_DARK, size=12), title_font=dict(color=TEXT_DARK)),
                 yaxis_title="Predicted Test Waste (Million tonnes/year)",
+                yaxis=dict(tickfont=dict(color=TEXT_DARK, size=12), title_font=dict(color=TEXT_DARK)),
+                legend=dict(font=dict(color=TEXT_DARK)),
                 height=450
             )
             st.plotly_chart(fig_eval, use_container_width=True)
